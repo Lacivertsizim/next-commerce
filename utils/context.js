@@ -15,13 +15,19 @@ const ContextProvider = ({ children }) => {
   });
   const [searchKeyword, setSearchKeyword] = useState("");
 
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
   useEffect(() => {
     setProducts({ ...products, loading: true });
     fetch(`${process.env.BACKEND_URL}/products`)
       .then((resp) => resp.json())
       .then((res) => {
         setProducts({ ...products, data: res, loading: false });
-        console.log({res})
+        console.log({ res });
       })
       .catch((error) => {
         setProducts({ ...products, data: [], loading: false, error });
@@ -56,6 +62,9 @@ const ContextProvider = ({ children }) => {
         setSearchKeyword,
         filteredProducts,
         setFilteredProducts,
+        cart,
+        addToCart,
+
       }}
     >
       {children}

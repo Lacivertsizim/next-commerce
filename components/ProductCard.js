@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const ProductCard = ({ product }) => {
@@ -5,19 +6,19 @@ const ProductCard = ({ product }) => {
   return (
     <div className="w-full max-w-sm mx-auto bg-gray-800 border border-gray-700 rounded-lg shadow flex flex-col justify-between">
       <div>
-        <a href={`/products/${product._id}`}>
+        <Link href={`/products/${product._id}`}>
           <img
             className="p-8 rounded-t-lg"
             src={product?.image}
             alt="product image"
           />
-        </a>
+        </Link>
         <div className="px-5 pb-5">
-          <a href={`/products/${product._id}`}>
+          <Link href={`/products/${product._id}`}>
             <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
               {product.title}
             </h5>
-          </a>
+          </Link>
           {/* <div className="my-4">
             <p className="text-white">{product.description}</p>
           </div> */}

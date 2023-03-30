@@ -1,6 +1,48 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const Register = () => {
+  const router = useRouter()
+  const [register, setRegister] = useState({
+    firstName:"",
+    lastName:"",
+    email:"",
+    password:"",
+  });
+
+  const handleChange = (e) => {
+    setRegister({...register, [e.target.id]: e.target.value});
+  }
+  console.log(register)
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    fetch(`${process.env.BACKEND_URL}/auth/register`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(register),
+})
+  .then((response) => response.json())
+  .then((data) => {
+
+    console.log("Success:", data);
+    if(data.message == "User created successfully"){
+      router.push("/")
+      localStorage.setItem("access_token", data.token)
+      toast.success("User created successfully")
+    }else{
+      toast.error(data.message);
+    }
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+  }
+
   return (
     <div className="min-h-[86vh] md:flex">
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
@@ -22,7 +64,7 @@ const Register = () => {
         <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
       </div>
       <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
-        <form className="bg-white">
+        <form onSubmit={handleSubmit} className="bg-white">
           <h1 className="text-gray-800 font-bold text-2xl mb-1">Hello Again!</h1>
           <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -41,9 +83,10 @@ const Register = () => {
             <input
               className="pl-2 outline-none border-none"
               type="text"
-              name=""
-              id=""
-              placeholder="Full name"
+              name="firstName"
+              onChange={handleChange}
+              id="firstName"
+              placeholder="First name"
             />
           </div>
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -64,9 +107,10 @@ const Register = () => {
             <input
               className="pl-2 outline-none border-none"
               type="text"
-              name=""
-              id=""
-              placeholder="Username"
+              name="lastName"
+              onChange={handleChange}
+              id="lastName"
+              placeholder="Lastname"
             />
           </div>
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
@@ -86,9 +130,10 @@ const Register = () => {
             </svg>
             <input
               className="pl-2 outline-none border-none"
-              type="text"
-              name=""
-              id=""
+              type="email"
+              name="email"
+              onChange={handleChange}
+              id="email"
               placeholder="Email Address"
             />
           </div>
@@ -107,13 +152,16 @@ const Register = () => {
             </svg>
             <input
               className="pl-2 outline-none border-none"
-              type="text"
-              name=""
-              id=""
+              type="password"
+              name="password"
+              onChange={handleChange}
+              required
+              minLength="5"
+              id="password"
               placeholder="Password"
             />
           </div>
-          <button
+          <button 
             type="submit"
             className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
           >

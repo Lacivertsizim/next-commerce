@@ -1,6 +1,7 @@
 import Search from "./Search";
 import Link from "next/link"
 import {BsPersonCircle} from "react-icons/bs"
+import {SlBasket} from "react-icons/sl"
 
 const Navbar = () => {
 
@@ -21,15 +22,20 @@ const Navbar = () => {
               <BsPersonCircle className="h-8 text-white text-xl"/>
             </Link>
               </div>
-            <div className="mr-4 space-x-4">
+            <div className="space-x-4">
              
-              <a href="/products">
+              <Link href="/products">
                 <i className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   Products
                 </i>
-              </a>
+              </Link>
             </div>
-            <Search/>
+            <Search />
+            <div className="ml-4 ">
+              <Link href="/basket">
+            <SlBasket className="h-8 text-white hover:text-orange-500 text-xl"/>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
